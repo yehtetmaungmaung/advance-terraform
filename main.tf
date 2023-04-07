@@ -77,8 +77,13 @@ resource "aws_security_group" "sg-nodejs-instance" {
 
 resource "aws_instance" "nodejs1" {
     ami = data.aws_ami.aws-linux.id
-    instance_type = "t2.micro"
+    instance_type = var.environment_instance_settings[var.environment].instance_type
     subnet_id = aws_subnet.subnet1.id
     vpc_security_group_ids = [aws_security_group.sg-nodejs-instance.id]
 
+    monitoring = var.environment_instance_settings[var.environment].monitoring
+
+    tags = {
+      environment = var.environment
+    }
 }
